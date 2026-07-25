@@ -70,7 +70,7 @@ export class PaletteService {
             return of(this.palettes.get(name));
         }
         return this.http
-            .get(`https://beadcolors.eremes.xyz/gen/v3/${name}.csv`, {
+            .get(`assets/palettes/${name}.csv`, {
                 responseType: 'arraybuffer',
             })
             .pipe(

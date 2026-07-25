@@ -6,8 +6,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { NtkmeButtonModule } from '@ctrl/ngx-github-buttons';
-
 import { MaterialModule } from './app.material.module';
 
 import { AppComponent } from './app.component';
@@ -53,9 +51,7 @@ import { environment } from './../environments/environment';
         FormsModule,
         MaterialModule,
 
-        NtkmeButtonModule,
-
-        ServiceWorkerModule.register('/ngsw-worker.js', {
+        ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production,
         }),
     ],

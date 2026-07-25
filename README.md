@@ -1,6 +1,6 @@
-# Beadifier - [Demo](http://beadifier.eremes.xyz)
+# Beadifier - [Demo](https://johantannh.github.io/beadifier/)
 
-**Note: This repository doesn't hold any color references. All colors inquiries/issues should be done [HERE](https://github.com/maxcleme/beadcolors).**
+Forked from [maxcleme/beadifier](https://github.com/maxcleme/beadifier).
 
 ### Main purpose
 
