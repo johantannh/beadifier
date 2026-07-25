@@ -8,7 +8,8 @@
     "format": "prettier --write \"./src/app/**/*.(ts|html|scss|json|js)\"",
     "lint": "ng lint --fix",
     "build": "ng build",
-    "build:prod": "ng build --prod=true"
+    "build:prod": "ng build --prod=true",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {

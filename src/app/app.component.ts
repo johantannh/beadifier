@@ -71,8 +71,10 @@ export class AppComponent {
 
         // Default
         paletteService.getAll().subscribe((allPalette) => {
+            const defaultPalette =
+                _.find(allPalette, (p) => p.name === 'Mard') || allPalette[0];
             this.project = new Project(
-                new PaletteConfiguration([allPalette[0]]),
+                new PaletteConfiguration([defaultPalette]),
                 new BoardConfiguration(),
                 new MatchingConfiguration(),
                 new ImageConfiguration(),

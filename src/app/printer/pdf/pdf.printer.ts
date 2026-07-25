@@ -50,10 +50,77 @@ export class PdfPrinter implements Printer {
         const doc: jsPDF = new jsPDF();
         doc.setFont('MonoFont');
 
+        this.sourceImageMapping(doc, project, margin, width, height);
+        doc.addPage();
         this.boardMapping(doc, project, margin, width, height);
         this.usage(doc, usage, width, height, margin, project);
         this.beadMapping(doc, project, reducedColor, width, height, margin);
         doc.save(`${filename}.pdf`);
+    }
+
+    sourceImageMapping(
+        doc: jsPDF,
+        project: Project,
+        margin: number,
+        width: number,
+        height: number
+    ) {
+        const boardSize = Math.min(
+            (width - margin * 2) / project.boardConfiguration.nbBoardHeight,
+            (width - margin * 2) / project.boardConfiguration.nbBoardWidth
+        );
+        const boardSheetWidthOffset =
+            (width - boardSize * project.boardConfiguration.nbBoardWidth) / 2;
+        const boardSheetHeightOffset =
+            (height - boardSize * project.boardConfiguration.nbBoardHeight) /
+            2;
+        const gridWidth = boardSize * project.boardConfiguration.nbBoardWidth;
+        const gridHeight =
+            boardSize * project.boardConfiguration.nbBoardHeight;
+
+        // fit the full source image inside the grid box, preserving its aspect ratio
+        const imageAspectRatio = project.srcWidth / project.srcHeight;
+        const gridAspectRatio = gridWidth / gridHeight;
+
+        let renderWidth: number;
+        let renderHeight: number;
+        if (imageAspectRatio > gridAspectRatio) {
+            renderWidth = gridWidth;
+            renderHeight = gridWidth / imageAspectRatio;
+        } else {
+            renderHeight = gridHeight;
+            renderWidth = gridHeight * imageAspectRatio;
+        }
+
+        const imageX = boardSheetWidthOffset + (gridWidth - renderWidth) / 2;
+        const imageY =
+            boardSheetHeightOffset + (gridHeight - renderHeight) / 2;
+
+        const formatMatch = /data:image\/(\w+);base64/.exec(
+            project.image.src
+        );
+        const format = formatMatch[1].toUpperCase() === 'JPG'
+            ? 'JPEG'
+            : formatMatch[1].toUpperCase();
+        doc.addImage(
+            project.image.src,
+            format,
+            imageX,
+            imageY,
+            renderWidth,
+            renderHeight
+        );
+
+        for (let y = 0; y < project.boardConfiguration.nbBoardHeight; y++) {
+            for (let x = 0; x < project.boardConfiguration.nbBoardWidth; x++) {
+                doc.rect(
+                    x * boardSize + boardSheetWidthOffset,
+                    y * boardSize + boardSheetHeightOffset,
+                    boardSize,
+                    boardSize
+                );
+            }
+        }
     }
 
     boardMapping(
